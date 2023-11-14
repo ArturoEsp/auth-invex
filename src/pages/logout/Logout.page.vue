@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import Loader from "../../components/Loader.vue";
 import { EnvConstants } from "../../constants";
-import { removeAllSessionStorage } from "../../services";
+import { getLogoutURLSessionStorage, removeAllSessionStorage } from "../../services";
 
 setTimeout(() => {
   removeAllSessionStorage();
-  window.location.href = EnvConstants.URL_LOGIN;
+  const url = getLogoutURLSessionStorage();
+  window.location.href = url || EnvConstants.URL_LOGIN;
 }, 1900);
 
 </script>

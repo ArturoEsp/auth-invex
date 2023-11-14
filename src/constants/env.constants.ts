@@ -9,5 +9,6 @@ export const EnvConstants = {
   MODYO: {
     API: import.meta.env.VITE_API_MODYO,
     KING: import.meta.env.VITE_KING_MODYO,
+    LOGOUT: import.meta.env.VITE_LOGOUT_URL,
   },
 };

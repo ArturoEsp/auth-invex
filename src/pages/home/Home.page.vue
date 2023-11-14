@@ -3,33 +3,23 @@ import { ref, watch } from "vue";
 import CardButton from "../../components/CardButton.vue";
 import CardNew from "../../components/CardNew/CardNew.vue";
 import NavBar from "../../components/NavBar.vue";
-import Loader from '../../components/Loader.vue';
+import Loader from "../../components/Loader.vue";
 import { useModyoMeQuery } from "../../api/query";
 
 const loading = ref(true);
-const { error, data } = useModyoMeQuery();
- 
-
-/* const urlParams = new URLSearchParams(window.location.search);
-const authorizationCode = urlParams.get('code');
-
-if (!authorizationCode) {
-  window.location.href = EnvConstants.URL_LOGIN;
-} else {
-  loading.value = false;
-} */
-
+const { data, isLoading, error } = useModyoMeQuery();
 
 watch(error, (val) => {
   console.log("error", { val });
 });
 
-
 watch(data, (val) => {
-  console.log("data", { val });
+  console.log(val);
 });
 
-
+watch(isLoading, (val) => {
+  loading.value = val;
+});
 </script>
 
 <template>
@@ -55,7 +45,7 @@ watch(data, (val) => {
           >
           </CardButton>
           <CardButton title="Estatus de mis solicitudes">
-            {{ '' }}
+            {{ data?.delegated_token.access_token }}
           </CardButton>
         </div>
         <div class="MainApp__Content-News">

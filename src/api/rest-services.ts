@@ -16,9 +16,7 @@ export const authenticationService = async (req: LoginRequest) => {
 
 export const logoutService =  async ({ token }: { token: string }) => {
   const { data } = await HttpClientCrypto.post<LogoutResponse>(Endpoints.logout, {}, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    }
+    headers: { Authorization: `Bearer ${token}` }
   });
 
   return data;

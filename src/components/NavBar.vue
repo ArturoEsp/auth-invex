@@ -1,21 +1,27 @@
 <script setup lang="ts">
+import { watch } from "vue";
 import { useLogoutMutation } from "../api/mutations";
-import {
-getLogoutURLSessionStorage,
-  getTokenSessionStorage,
-} from "../services";
+import { useModyoMeQuery } from "../api/query";
 import { EnvConstants } from "../constants";
 
-const { mutate } = useLogoutMutation();
+const { mutate, error, data: dataLogout, isLoading } = useLogoutMutation();
+const { data } = useModyoMeQuery();
+
+watch(error, (val) => {
+  console.log("error", { val });
+});
+
+watch(dataLogout, (val) => {
+  if (val) window.location.replace(EnvConstants.MODYO.LOGOUT);
+});
 
 const logout = () => {
-  const token = getTokenSessionStorage();
-  if (token) mutate({ token });
-  
-  const url = getLogoutURLSessionStorage();
-  window.location.href = url || EnvConstants.URL_LOGIN;
+  if (data.value?.delegated_token.access_token) {
+    mutate({ token: data.value?.delegated_token.access_token });
+  } else {
+    alert("Imposible cerrar tu sesión.");
+  }
 };
-
 </script>
 
 <template>
@@ -29,7 +35,7 @@ const logout = () => {
     <div class="NavBar__Profile">
       <div class="icons"></div>
       <div class="profile">
-        <button v-on:click="logout">Cerrar sesión</button>
+        <button v-on:click="logout" v-bind:disabled="isLoading === true">Cerrar sesión</button>
       </div>
     </div>
   </div>
